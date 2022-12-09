@@ -11,6 +11,7 @@ const validateSignUp = (req, res, next) =>{
         return;
     }
 
+    
     if(!req.body.email){
         res.status(StatusCodes.FORBIDDEN).send({
             status : StatusCodes.FORBIDDEN,
@@ -27,7 +28,7 @@ const validateSignUp = (req, res, next) =>{
         })
         return;
     } else {
-        let emailExist = `SELECT * FROM user WHERE email=?`;
+        let emailExist = `SELECT * FROM customers WHERE email=?`;
         db.get(emailExist, [req.body.email], (err, email) => {
             if (err) {
                 console.log('Error While the Checking the Email is Exists or not', err);
@@ -44,7 +45,7 @@ const validateSignUp = (req, res, next) =>{
                     return;
                 }
                 else {
-                    let mobileExist = `SELECT * FROM user WHERE mobile=?`
+                    let mobileExist = `SELECT * FROM customers WHERE mobile=?`
                     db.get(mobileExist, [req.body.mobile], (err, mobile) => {
 
                         if (err) {

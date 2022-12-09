@@ -2,11 +2,11 @@ const db = require("../model");
 const {ReasonPhrases, StatusCodes} = require("http-status-codes");
 const authConfig = require("../config/auth.config")
 
-exports.signup = (req, res) =>{
+exports.createUser = (req, res) =>{
     const userObj = {
         name : req.body.name,
-        email : req.body.email,
-        mobile : req.body.mobile
+        mobile : req.body.mobile,
+        email : req.body.email
     }
 
     let sql = `INSERT INTO customers (name, email, mobile) VALUES (?,?,?)`
@@ -24,6 +24,33 @@ exports.signup = (req, res) =>{
                 status : StatusCodes.CREATED,
                 response : ReasonPhrases.CREATED,
                 data : userObj
+            })
+        }
+    })
+}
+exports.createAddress = (req, res) =>{
+    const addObj = {
+        city : req.body.city,
+        state : req.body.state,
+        country : req.body.country,
+        customerID : req.body.customerID
+    }
+
+    let sql = `INSERT INTO address (city, state, country, customerID) VALUES (?,?,?,?)`
+    let values = [addObj.city, addObj.state, addObj.country, addObj.customerID];
+
+    db.all(sql, values, function(err, result){
+        if(err){
+            res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+            return;
+        }
+        else{
+            console.log('Address Created', result);
+            res.status(StatusCodes.CREATED).send({
+                message : "Address has been created successfully",
+                status : StatusCodes.CREATED,
+                response : ReasonPhrases.CREATED,
+                data : addObj
             })
         }
     })
@@ -59,22 +86,22 @@ exports.getAllUser = (req, res) =>{
 
 // all customers with address
 exports.getAllUserwithAdd = (req, res) =>{
-    let sql = `select a.customerName, c.mobile, c.email, a.city, a.state, a.country
-    from customers c 
-    left join address a 
-    on a.customerID = c.customerID `;
+    let sql = `select c.*,a.*
+    from Customers c
+    left join Address a
+    on a.customerID = c.customerID`;
     let params = [];
-    db.all(sql, params, (err, users, address) => {
+    db.all(sql, params, (err, users) => {
         if(err){
             res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
             return;
         }else{
-            if(users, address){
+            if(users){
                 res.status(StatusCodes.OK).send({
                     message : "List of all the customers with address",
                     status : StatusCodes.OK,
                     response : ReasonPhrases.OK,
-                    data : {users, address}
+                    data : users
                 });
                 return;
             }else{
@@ -118,7 +145,6 @@ exports.getAllAddress = (req, res) =>{
     })
 }
 
-
 exports.getUser = (req, res) => {
     let sql = `SELECT * FROM customers WHERE customerID = ?`;
     let params = [req.params.id];
@@ -145,14 +171,40 @@ exports.getUser = (req, res) => {
         }
     })
 }
+exports.getAddress = (req, res) => {
+    let sql = `SELECT * FROM address WHERE addressID = ?`;
+    let params = [req.params.id];
+    db.get(sql, params, (err, address) =>{
+        if(err){
+            res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+            return;
+        }else{
+            if(address){
+                res.status(StatusCodes.OK).send({
+                    message : "Single Address",
+                    status : StatusCodes.OK,
+                    response : ReasonPhrases.OK,
+                    data : address
+                })
+                return;
+            }else{
+                res.status(StatusCodes.NOT_FOUND).send({
+                    status : StatusCodes.NOT_FOUND,
+                    response : ReasonPhrases.NOT_FOUND
+                })
+                return;
+            }
+        }
+    })
+}
 
 // Single customer with address
 exports.getUserwithAdd = (req, res) => {
     let sql = `select c.*,a.*
     from Customers c
     left join Address a
-    on a.cid = c.customerID
-    where  case when c.customerID =? then 1=1 else  c.customerID=? end`;
+    on a.customerID = c.customerID
+    where  c.customerID = ?`;
     let params = [req.params.id];
     db.get(sql, params, (err, user) =>{
         if(err){
@@ -211,7 +263,7 @@ exports.updateUser = (req, res)=>{
 
 exports.deleteUser = (req, res) =>{
 
-    let sql = `DELETE FROM Customers WHERE id = ?`;
+    let sql = `DELETE FROM customers WHERE customerID = ?`;
     let params = [req.params.id];
     db.get(sql, params, (err)=>{
         if(err){
@@ -219,7 +271,26 @@ exports.deleteUser = (req, res) =>{
             return;
         }else{
             res.status(StatusCodes.OK).send({
-                message : "User has been removed",
+                message : "Customer has been removed",
+                status : StatusCodes.OK,
+                response : ReasonPhrases.OK
+            })
+            return;
+        }
+    })
+}
+
+exports.deleteAddress = (req, res) =>{
+
+    let sql = `DELETE FROM address WHERE addressID = ?`;
+    let params = [req.params.id];
+    db.get(sql, params, (err)=>{
+        if(err){
+            res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+            return;
+        }else{
+            res.status(StatusCodes.OK).send({
+                message : "Address has been removed",
                 status : StatusCodes.OK,
                 response : ReasonPhrases.OK
             })

@@ -2,20 +2,37 @@ const authController = require('../controller/auth.controller');
 const {validateBody} = require('../middleware/index');
 module.exports = (app)=>{
 
-    //  POST /user/signup
-    app.post('/user', validateBody.validateSignUp , authController.signup);
+    //  POST /user
+    app.post('/user', validateBody.validateSignUp , authController.createUser);
+
+
+    //  POST /address
+    app.post('/address', authController.createAddress);
+
 
     //  POST /user/signin
     // app.post('/user/signin/', validateBody.validateSignIn, authController.signIn);
 
-     //  GET /user/:id
+
+     //  GET /user/:id     ---> Only single customer without address
     app.get('/user/:id', authController.getUser);
 
-    //  GET /users/
+
+    //  GET /users            ---> Only customers without address
     app.get('/users', authController.getAllUser);
+
+
+    //Get all address           ---> Only addresses without customers
+    app.get('/address', authController.getAllAddress);
+
+
+    //Get address by id           ---> Only addresses without customers
+    app.get('/address/:id', authController.getAddress);
+
 
     //  PUT /user/:id
     app.put('/user/:id', authController.updateUser);
+
 
     //  DELETE /user/:id
     app.delete('/user/:id', authController.deleteUser);
@@ -24,10 +41,12 @@ module.exports = (app)=>{
     //GET all user with address
     app.get('/users/add', authController.getAllUserwithAdd);
 
-    //Get all address
-    app.get('/address', authController.getAllAddress);
-
+    
     //GET single user with address
     app.get('/user/add/:id', authController.getUserwithAdd);
+
+
+    //Delete particular address by id
+    app.delete('/address/:id', authController.deleteAddress);
 
 }
