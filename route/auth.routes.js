@@ -33,6 +33,9 @@ module.exports = (app)=>{
     //  PUT /user/:id
     app.put('/user/:id', authController.updateUser);
 
+    //  PUT /address/:id
+    app.put('/address/:id', authController.updateAddress);
+
 
     //  DELETE /user/:id
     app.delete('/user/:id', authController.deleteUser);

@@ -9,7 +9,7 @@ exports.createUser = (req, res) =>{
         email : req.body.email
     }
 
-    let sql = `INSERT INTO customers (name, email, mobile) VALUES (?,?,?)`
+    let sql = `INSERT INTO customers (name, mobile, email) VALUES (?,?,?)`
     let values = [userObj.name, userObj.mobile, userObj.email];
 
     db.all(sql, values, function(err, result){
@@ -236,23 +236,23 @@ exports.updateUser = (req, res)=>{
 
     let userObj = {
         name : req.body.name,
+        mobile : req.body.mobile,
         email : req.body.email,
-        mobile : req.body.mobile
-    }
+        }
 
-    let sql = `UPDATE user set
-                name = coalesce(?, name),
-                email = coalesce(?, email),
-                mobile = coalesce(?, mobile)
-                WHERE id = ?`;
-    let params = [userObj.name, userObj.email, userObj.mobile, req.params.id];
+    let sql = `UPDATE customers SET
+                name = coalesce(?, name),               
+                mobile = coalesce(?, mobile),
+                email = coalesce(?, email)
+                WHERE customerID = ?`;
+    let params = [userObj.name, userObj.mobile, userObj.email, req.params.id];
     db.get(sql, params, (err)=>{
         if(err){
             res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
             return;
         }else{
             res.status(StatusCodes.ACCEPTED).send({
-                message : "User has been updated successfully",
+                message : "Customer has been updated successfully",
                 status : StatusCodes.ACCEPTED,
                 response : ReasonPhrases.ACCEPTED
             })
@@ -260,6 +260,37 @@ exports.updateUser = (req, res)=>{
         }
     })
 }
+
+
+exports.updateAddress = (req, res)=>{
+
+    let userObj = {
+        city : req.body.city,
+        state :req.body.state,
+        country : req.body.country,
+        }
+
+    let sql = `UPDATE address set
+                city = coalesce(?, city),
+                state = coalesce(?, state),
+                country = coalesce(?, country)
+                WHERE addressID = ?`;
+    let params = [userObj.city, userObj.state, userObj.country, req.params.id];
+    db.get(sql, params, (err)=>{
+        if(err){
+            res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+            return;
+        }else{
+            res.status(StatusCodes.ACCEPTED).send({
+                message : "Address has been updated successfully",
+                status : StatusCodes.ACCEPTED,
+                response : ReasonPhrases.ACCEPTED
+            })
+            return;
+        }
+    })
+}
+
 
 exports.deleteUser = (req, res) =>{
 
