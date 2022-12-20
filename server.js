@@ -18,5 +18,5 @@ app.get('/', (req, res)=>{
 
 require("./route/auth.routes")(app);
 app.listen(serverConfig.PORT, () =>{
-    console.log(`Server is listeing on PORT ${serverConfig.PORT}`);
+    console.log(`Server is listening on PORT ${serverConfig.PORT}`);
 })
