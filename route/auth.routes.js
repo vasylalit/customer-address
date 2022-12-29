@@ -51,8 +51,5 @@ module.exports = (app)=>{
 
     //Delete particular address by id
     app.delete('/address/:id', authController.deleteAddress);
-
-    // Postgres Database
-    app.get("/postgres", authController.postgres)
-
+    
 }

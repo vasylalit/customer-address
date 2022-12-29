@@ -84,45 +84,6 @@ exports.getAllUser = (req, res) =>{
     })
 }
 
-exports.postgres = async(req, res)=>{
-    const client = new Client({
-        host : "localhost",
-        user : "postgres",
-        port : 5432,
-        password : "lalit123",
-        database : "customeradd"
-    })
-    await client.connect();
-
-    let sql = `select c.*,a.*
-    from Customers c
-    left join Address a
-    on a.customerID = c.customerID`;
-    let params = [];
-    
-    // console.log("hello")
-    client.query(sql, params,  (err, users)=>{
-        if(err){
-            res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
-            return;
-        }else{
-            if(users){
-                res.status(StatusCodes.OK).send({
-                    message : "List of all the customers",
-                    data : users
-                });
-                return;
-            }else{
-                res.status(StatusCodes.NOT_FOUND).send({
-                    status : StatusCodes.NOT_FOUND,
-                    response : ReasonPhrases.NOT_FOUND
-                })
-                return;
-            }
-        }
-    })
-}
-
 
 // all customers with address
 exports.getAllUserwithAdd = (req, res) =>{

@@ -39,8 +39,8 @@ exports.sync = async (req, res) => {
                         customerID serial primary key,
                         name text,
                         mobile bigint,
-                        email text unique)`);
-                console.log("Successfully Created the Customer Table", createCustomerTable);
+                        email text)`);
+                console.log("Successfully Created the Customer Table");
             }
 
             // fetching the data from sqlite
@@ -53,8 +53,8 @@ exports.sync = async (req, res) => {
                 else {
                     // console.log(result);
                     result.forEach(async(customer) => {
-                        let insert = `INSERT INTO customers(customerID, name, mobile, email) VALUES($1,$2,$3,$4) RETURNING *`
-                        let values = [customer.customerID, customer.name, customer.mobile, customer.email];
+                        let insert = `INSERT INTO customers(name, mobile, email) VALUES($1,$2,$3) RETURNING *`
+                        let values = [customer.name, customer.mobile, customer.email];
                         console.log(values);
                         const response = await client.query(insert, values);
                         // console.log(response);
@@ -80,7 +80,7 @@ exports.sync = async (req, res) => {
                         customerID integer,
                         constraint fk_customerID
                         foreign key(customerID) references customers(customerID) on update cascade on delete cascade)`);
-                console.log("Successfully Created the address Table", createAddressTable);
+                console.log("Successfully Created the address Table");
             }
 
             // fetching the data from sqlite
@@ -93,8 +93,8 @@ exports.sync = async (req, res) => {
                 else {
                     // console.log(result);
                     result.forEach(async(address) => {
-                        let insert = `INSERT INTO address(addressID, city, state, country, customerID) VALUES($1,$2,$3,$4,$5) RETURNING *`
-                        let values = [address.addressID, address.city, address.state, address.country, address.customerID];
+                        let insert = `INSERT INTO address(city, state, country, customerID) VALUES($1,$2,$3,$4) RETURNING *`
+                        let values = [address.city, address.state, address.country, address.customerID];
                         console.log(values);
                         const response = await client.query(insert, values);
                         // console.log(response);
@@ -103,14 +103,22 @@ exports.sync = async (req, res) => {
             })
 
             // clean local database;
-            // db.run(`DELETE FROM customers;`,(err)=>{
-            //     if(err){
-            //         console.log(`Some error while clearing local storage ${err}`);
-            //     }
-            //     else{
-            //         console.log('Successfully clear the data');
-            //     }
-            // })
+            db.run(`DELETE FROM customers;`,(err)=>{
+                if(err){
+                    console.log(`Some error while clearing local storage ${err}`);
+                }
+                else{
+                    console.log('Successfully clear the customers data');
+                }
+            })
+            db.run(`DELETE FROM address;`,(err)=>{
+                if(err){
+                    console.log(`Some error while clearing local storage ${err}`);
+                }
+                else{
+                    console.log('Successfully clear the address data');
+                }
+            })
 
             res.status(StatusCodes.ACCEPTED).send({
                 status : StatusCodes.ACCEPTED,
