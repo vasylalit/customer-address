@@ -1,5 +1,6 @@
 # Customer-Address
-This project is node.js back-end code for relation between customer table and address table using primary key and foreign key in which we can perform some CRUD + optimized APIs.
+This project is node.js back-end code for relation between customer table and address table using primary key and foreign key in which we can perform some CRUD + optimized APIs + Sync Database feuture.
+In this project, I have created the Sync functionality --> When I need to send the existing data from SQLite offline database to Online Postgres server, I defined a controller in which it checks whether we have some existing data or not. If data exists, it will send all the data to the postgres server by calling the API. After syncing the data, the existing SQLite database will be erased. 
 
 <br/>
 
@@ -34,7 +35,6 @@ This project is node.js back-end code for relation between customer table and ad
 
 >**Delete Address Data**
 - You can delete an address using the addressID.
-
 
 <br/>
 
@@ -100,3 +100,7 @@ You can delete the data of the customer by customerID.</br></br>
 - **Delete Customer data**</br>
 `DELETE /address/:id`</br>
 You can delete the data of the customer address by addressID.</br></br>
+
+- **Sync Database to Postgres**<br/>
+`POST /sync/database`<br/>\
+Sync the existing offline SQLite database to the online postgres server. After Sync, the existing offline SQLite data will be removed.<br/><br/>
