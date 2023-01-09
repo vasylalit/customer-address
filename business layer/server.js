@@ -3,12 +3,16 @@ const bodyParser = require("body-parser");
 const db = require("./model")
 const serverConfig = require("./config/server.config")
 const dbsource = require("./config/db.config")
-// const {Client} = require("pg")
+const cors = require("cors")
+
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(cors({
+    origin: '*'
+}));
 
 //testing api
 app.get('/', (req, res)=>{

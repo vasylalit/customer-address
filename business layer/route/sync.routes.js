@@ -1,5 +1,6 @@
 const database = require('../controller/database.controller');
-module.exports = (app)=>{
+const cors = require("cors")
 
+module.exports = (app)=>{
     app.post('/sync/database', database.sync);
 }

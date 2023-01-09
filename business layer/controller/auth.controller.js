@@ -13,7 +13,7 @@ exports.createUser = (req, res) =>{
     let sql = `INSERT INTO customers (name, mobile, email) VALUES (?,?,?)`
     let values = [userObj.name, userObj.mobile, userObj.email];
 
-    db.all(sql, values, function(err, result){
+    db.run(sql, values, function(err, result){
         if(err){
             res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
             return;
@@ -24,7 +24,8 @@ exports.createUser = (req, res) =>{
                 message : "Customer has been created successfully",
                 status : StatusCodes.CREATED,
                 response : ReasonPhrases.CREATED,
-                data : userObj
+                data : userObj,
+                customerID : this.lastID
             })
         }
     })
@@ -40,7 +41,7 @@ exports.createAddress = (req, res) =>{
     let sql = `INSERT INTO address (city, state, country, customerID) VALUES (?,?,?,?)`
     let values = [addObj.city, addObj.state, addObj.country, addObj.customerID];
 
-    db.all(sql, values, function(err, result){
+    db.run(sql, values, function(err, result){
         if(err){
             res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
             return;
@@ -51,7 +52,8 @@ exports.createAddress = (req, res) =>{
                 message : "Address has been created successfully",
                 status : StatusCodes.CREATED,
                 response : ReasonPhrases.CREATED,
-                data : addObj
+                data : addObj,
+                addressID : this.lastID
             })
         }
     })
