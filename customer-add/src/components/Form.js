@@ -21,10 +21,10 @@ function Form() {
     e.preventDefault()
     const post = { data: data }
     try {
-      const res = await axios.post('http://192.168.175.18:6060/user', post)
+      // const res = await axios.post(url, post)
       const response = "";
     
-      await axios.post(res, data , {
+      await axios.post(url, data , {
         headers: {
           Accept: '*',
           'Content-Type': 'application/json',

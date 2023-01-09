@@ -11,11 +11,10 @@ this.addEventListener("install",(event)=>{
                 '/index.html',
                 "/logo192.png",
                 "/favicon.ico",
-                "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js",
-                "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css",
-                "",
+                // "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js",
+                // "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css",
                 "/",
-                // "/user"
+                "/user"
             ])
         })
     )
