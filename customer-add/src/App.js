@@ -31,8 +31,6 @@ function App() {
     <div>
       <Form />
       <div className='container'>
-      <h3>Welcome to KindaCode.com</h3>
-      <p>Turn on/off your Wi-Fi to see what happens</p>
       {isOnline ? (
         <h1 className='online'>You Are Online</h1>
       ) : (

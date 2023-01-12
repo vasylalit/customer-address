@@ -11,7 +11,7 @@ function SynchroniseButton() {
     try {
       const response = "";
 
-      await axios.post('http://localhost:6060/sync/database',  post , {
+      await axios.post('http://192.168.175.18:6060/sync/database',  post , {
         headers: {
           Accept: '*/*',
           'Content-Type': 'application/json',

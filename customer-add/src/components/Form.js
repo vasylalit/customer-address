@@ -7,6 +7,7 @@ function Form() {
   const [firstname, setFirstname] = useState("")
   const [firstmobile, setFirstmobile] = useState("")
   const [firstemail, setFirstemail] = useState("")
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -16,15 +17,32 @@ function Form() {
     mobile : "",
     email : ""
   })
+  
+  
+  // useEffect(()=>{
+  //   window.scrollTo(0, 0);
+  //   fetch(url).then((response)=>{
+  //     response.json().then((data)=>{
+  //       console.warn(data);
+  //       setData(data)
+  //       localStorage.setItem("user", JSON.stringify(data))
+  //     })
+  //   }).catch(err=>{
+  //     let collection = localStorage.getItem("user");
+  //     setData(JSON.parse(collection))
+  //   })
+  // }, [])
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const post = { data: data }
     try {
       // const res = await axios.post(url, post)
-      const response = "";
+      var response = "";
     
-      await axios.post(url, data , {
+      await axios.post(url, post , {
         headers: {
           Accept: '*',
           'Content-Type': 'application/json',
@@ -41,20 +59,7 @@ function Form() {
       alert(e)
     }
   }
-
-  // function handleSubmit(e) {
-  //   e.preventDefault();
-   
-  //     Axios.post(url,{
-  //     name : firstname,
-  //     mobile : firstmobile,
-  //     email : firstemail
-  //   })
-  //   .then(res => {
-  //     console.log(res.data)
-  //     console.log(data.name);
-  //   })
-  // }
+  
 
   function handle(e){
     const newdata = { ...data}
